@@ -11,35 +11,37 @@ import { Dialogs } from '@ionic-native/dialogs';
 import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
 import { ConnectivityProvider } from '../providers/connectivity/connectivity';
 import { Geolocation } from '@ionic-native/geolocation'
+import { Network } from '@ionic-native/network';
 
 @NgModule({
-  declarations: [
-    MyApp
-  ],
-  imports: [
-    BrowserModule,
-    IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot(
-      /*{
-      name: '__mydb',
-      driverOrder: ['sqlite', 'indexeddb', 'websql']
-    }*/
-    )
-  ],
-  bootstrap: [IonicApp],
-  entryComponents: [
-    MyApp
-  ],
-  providers: [
-    StatusBar,
-    SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DataProvider,
-    Keyboard,
-    Dialogs,
-    GoogleMapsProvider,
-    ConnectivityProvider,
-    Geolocation
-  ]
+    declarations: [
+        MyApp
+    ],
+    imports: [
+        BrowserModule,
+        IonicModule.forRoot(MyApp),
+        IonicStorageModule.forRoot(
+            /*{
+             name: '__mydb',
+             driverOrder: ['sqlite', 'indexeddb', 'websql']
+             }*/
+        )
+    ],
+    bootstrap: [IonicApp],
+    entryComponents: [
+        MyApp
+    ],
+    providers: [
+        StatusBar,
+        SplashScreen,
+        {provide: ErrorHandler, useClass: IonicErrorHandler},
+        DataProvider,
+        Keyboard,
+        Dialogs,
+        GoogleMapsProvider,
+        ConnectivityProvider,
+        Geolocation,
+        Network
+    ]
 })
 export class AppModule {}

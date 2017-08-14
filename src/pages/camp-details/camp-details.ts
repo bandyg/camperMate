@@ -11,35 +11,36 @@ import { DataProvider } from '../../providers/data/data'
  */
 @IonicPage()
 @Component({
-  selector: 'page-camp-details',
-  templateUrl: 'camp-details.html',
+    selector: 'page-camp-details',
+    templateUrl: 'camp-details.html',
 })
 export class CampDetailsPage {
 
-  campDetailsForm: FormGroup;
+    campDetailsForm: FormGroup;
 
-  constructor(public navCtrl: NavController,
-              public formBuilder: FormBuilder,
-              public data: DataProvider
-  ) {
+    constructor(public navCtrl: NavController,
+                public formBuilder: FormBuilder,
+                public data: DataProvider
+    ) {
 
-    this.campDetailsForm = formBuilder.group({
-      getAccessCode: ['12345'],
-      ammenitiesCode: [''],
-      wifiPassword: [''],
-      phoneNumber: [''],
-      departureDate: [''],
-      notes: ['']
-    });
+        this.campDetailsForm = formBuilder.group({
+            getAccessCode: ['12345'],
+            ammenitiesCode: [''],
+            wifiPassword: [''],
+            phoneNumber: [''],
+            departureDate: [''],
+            notes: ['']
+        });
 
-  }
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad CampDetailsPage');
-  }
+    ionViewDidLoad() {
+        console.log('ionViewDidLoad CampDetailsPage');
+    }
 
-  saveForm() {
+    saveForm() {
 
-  }
+        let data = this.campDetailsForm.value;
+    }
 
 }

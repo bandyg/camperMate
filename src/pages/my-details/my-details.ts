@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 /**
  * Generated class for the MyDetailsPage page.
@@ -9,16 +10,34 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
  */
 @IonicPage()
 @Component({
-  selector: 'page-my-details',
-  templateUrl: 'my-details.html',
+    selector: 'page-my-details',
+    templateUrl: 'my-details.html',
 })
 export class MyDetailsPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-  }
+    myDetailsForm: FormGroup;
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MyDetailsPage');
-  }
+    constructor(public navCtrl: NavController,
+                public navParams: NavParams,
+                public formBuilder: FormBuilder,
+    ) {
+        this.myDetailsForm = formBuilder.group({
+            carRegitration: [''],
+            trailerRegistration: [''],
+            trailerDimension: [''],
+            phoneNumber: [''],
+            notes: ['']
+        });
+    }
+
+    ionViewDidLoad() {
+
+        console.log('ionViewDidLoad MyDetailsPage');
+    }
+
+    saveForm() {
+
+        let data = this.myDetailsForm.value;
+    }
 
 }

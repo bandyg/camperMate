@@ -12,36 +12,63 @@ import { Geolocation } from '@ionic-native/geolocation'
  */
 @IonicPage()
 @Component({
-  selector: 'page-location',
-  templateUrl: 'location.html',
+    selector: 'page-location',
+    templateUrl: 'location.html',
 })
 export class LocationPage {
 
-  @ViewChild('map') mapElement: ElementRef;
-  @ViewChild('pleaseConnect') conElement: ElementRef;
+    @ViewChild('map') mapElement: ElementRef;
+    @ViewChild('pleaseConnect') pleaseConnect: ElementRef;
 
-  latitude: number;
-  longitude: number;
+    latitude: number;
+    longitude: number;
 
-  constructor(public navCtrl: NavController,
-              public map: GoogleMapsProvider,
-              public platform: Platform,
-              public dataService: DataProvider,
-              public alertCtrl: AlertController,
-              public geolocation: Geolocation
-  ) {
-  }
+    constructor(public navCtrl: NavController,
+                public platform: Platform,
+                public dataService: DataProvider,
+                public alertCtrl: AlertController,
+                public geolocation: Geolocation,
+                public maps: GoogleMapsProvider
+    ) {
+    }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LocationPage');
-  }
+    ionViewDidLoad() {
 
-  setLocation(): void {
+        this.platform.ready().then(() => {
 
-  }
+            this.dataService.getLocation().then((location) => {
 
-  takeMeHome(): void {
+                let savedLocation: any = false;
 
-  }
+                if(location && typeof(location) != "undefined"){
+                    savedLocation = JSON.parse(location);
+                }
+
+                let mapLoaded = this.maps.init(this.mapElement.nativeElement, this.pleaseConnect.nativeElement).then(() => {
+
+                    if(savedLocation){
+
+                        this.latitude = savedLocation.latitude;
+                        this.longitude = savedLocation.longitude;
+
+                        this.maps.changeMarker(this.latitude, this.longitude);
+
+                    }
+
+                });
+
+            });
+
+        });
+
+    }
+
+    setLocation(): void {
+
+    }
+
+    takeMeHome(): void {
+
+    }
 
 }

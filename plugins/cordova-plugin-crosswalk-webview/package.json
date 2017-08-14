@@ -1,41 +1,19 @@
 {
-  "_args": [
-    [
-      {
-        "raw": "cordova-plugin-crosswalk-webview@2.3.0",
-        "scope": null,
-        "escapedName": "cordova-plugin-crosswalk-webview",
-        "name": "cordova-plugin-crosswalk-webview",
-        "rawSpec": "2.3.0",
-        "spec": "2.3.0",
-        "type": "version"
-      },
-      "/Users/bandyg/WebstormProjects/quick-lists/node_modules"
-    ]
-  ],
   "_from": "cordova-plugin-crosswalk-webview@2.3.0",
   "_id": "cordova-plugin-crosswalk-webview@2.3.0",
-  "_inCache": true,
+  "_inBundle": false,
+  "_integrity": "sha1-4u407P2t3YS9qE5yZjU55AyZ0yQ=",
   "_location": "/cordova-plugin-crosswalk-webview",
-  "_nodeVersion": "4.6.0",
-  "_npmOperationalInternal": {
-    "host": "packages-18-east.internal.npmjs.com",
-    "tmp": "tmp/cordova-plugin-crosswalk-webview-2.3.0.tgz_1485313060543_0.1785983918234706"
-  },
-  "_npmUser": {
-    "name": "fujunwei",
-    "email": "junwei.fu@intel.com"
-  },
-  "_npmVersion": "2.15.9",
   "_phantomChildren": {},
   "_requested": {
+    "type": "version",
+    "registry": true,
     "raw": "cordova-plugin-crosswalk-webview@2.3.0",
-    "scope": null,
-    "escapedName": "cordova-plugin-crosswalk-webview",
     "name": "cordova-plugin-crosswalk-webview",
+    "escapedName": "cordova-plugin-crosswalk-webview",
     "rawSpec": "2.3.0",
-    "spec": "2.3.0",
-    "type": "version"
+    "saveSpec": null,
+    "fetchSpec": "2.3.0"
   },
   "_requiredBy": [
     "#USER",
@@ -43,27 +21,21 @@
   ],
   "_resolved": "https://registry.npmjs.org/cordova-plugin-crosswalk-webview/-/cordova-plugin-crosswalk-webview-2.3.0.tgz",
   "_shasum": "e2ee34ecfdaddd84bda84e72663539e40c99d324",
-  "_shrinkwrap": null,
   "_spec": "cordova-plugin-crosswalk-webview@2.3.0",
-  "_where": "/Users/bandyg/WebstormProjects/quick-lists/node_modules",
+  "_where": "/Users/bandyg/Downloads/camperMate/node_modules",
   "author": "",
   "bugs": {
     "url": "https://crosswalk-project.org/jira"
   },
+  "bundleDependencies": false,
   "cordova": {
     "id": "cordova-plugin-crosswalk-webview",
     "platforms": [
       "android"
     ]
   },
-  "dependencies": {},
+  "deprecated": false,
   "description": "Changes the default WebView to CrossWalk",
-  "devDependencies": {},
-  "directories": {},
-  "dist": {
-    "shasum": "e2ee34ecfdaddd84bda84e72663539e40c99d324",
-    "tarball": "https://registry.npmjs.org/cordova-plugin-crosswalk-webview/-/cordova-plugin-crosswalk-webview-2.3.0.tgz"
-  },
   "engines": {
     "cordovaDependencies": {
       "2.0.0": {
@@ -83,7 +55,6 @@
       }
     }
   },
-  "gitHead": "7eab829d025c936e591326d34f1c60d34a0c7cbc",
   "homepage": "https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview",
   "keywords": [
     "cordova",
@@ -95,31 +66,10 @@
     "cordova-android"
   ],
   "license": "Apache 2.0",
-  "maintainers": [
-    {
-      "name": "agrieve",
-      "email": "agrieve@chromium.org"
-    },
-    {
-      "name": "clelland",
-      "email": "iclelland@google.com"
-    },
-    {
-      "name": "huningxin",
-      "email": "ningxin.hu@intel.com"
-    },
-    {
-      "name": "fujunwei",
-      "email": "junwei.fu@intel.com"
-    }
-  ],
   "name": "cordova-plugin-crosswalk-webview",
-  "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/crosswalk-project/cordova-plugin-crosswalk-webview.git"
   },
-  "scripts": {},
   "version": "2.3.0"
 }

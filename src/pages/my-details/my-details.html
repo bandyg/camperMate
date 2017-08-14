@@ -12,18 +12,6 @@
       <img src="../../assets/images/logo.png" class="logo" />
     </ion-title>
 
-    <ion-buttons start>
-      <button ion-button="" icon-only="" (click)="null">
-        <ion-icon name="pin"></ion-icon>
-      </button>
-    </ion-buttons>
-
-    <ion-buttons end>
-      <button ion-button="" icon-only="" (click)="null">
-        <ion-icon name="walk"></ion-icon>
-      </button>
-    </ion-buttons>
-
   </ion-navbar>
 
 </ion-header>
@@ -41,30 +29,29 @@
   </ion-card>
 
   <ion-list no-lines>
-    <ion-item>
-      <ion-label>Gate Access Code</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Gate Access Code</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Gate Access Code</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Gate Access Code</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Gate Access Code</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Gate Access Code</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
+    <form [formGroup]="myDetailsForm" (change)="saveForm()">
+      <ion-item>
+        <ion-label floating="">Car Registration</ion-label>
+        <ion-input type="text" formControlName="carRegitration"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating="">Trailer Registration</ion-label>
+        <ion-input type="text" formControlName="trailerRegistration"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating="">Trailer Dimension</ion-label>
+        <ion-input type="text" formControlName="trailerDimension"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating="">Phone Number</ion-label>
+        <ion-input type="text" formControlName="phoneNumber"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label floating="">Notes</ion-label>
+        <ion-input type="text" formControlName="notes"></ion-input>
+      </ion-item>
+    </form>
+
   </ion-list>
 
 </ion-content>
