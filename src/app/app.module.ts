@@ -8,10 +8,10 @@ import { DataProvider } from '../providers/data/data';
 import { Keyboard } from '@ionic-native/keyboard';
 import { IonicStorageModule } from '@ionic/storage';
 import { Dialogs } from '@ionic-native/dialogs';
-import { GoogleMapsProvider } from '../providers/google-maps/google-maps';
 import { ConnectivityProvider } from '../providers/connectivity/connectivity';
 import { Geolocation } from '@ionic-native/geolocation'
 import { Network } from '@ionic-native/network';
+import { BaiduMapsProvider } from '../providers/google-maps/baidu-maps'
 
 @NgModule({
     declarations: [
@@ -38,10 +38,10 @@ import { Network } from '@ionic-native/network';
         DataProvider,
         Keyboard,
         Dialogs,
-        GoogleMapsProvider,
         ConnectivityProvider,
         Geolocation,
-        Network
+        Network,
+        BaiduMapsProvider
     ]
 })
 export class AppModule {}
