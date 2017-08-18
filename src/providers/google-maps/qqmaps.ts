@@ -1,31 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { ConnectivityProvider } from '../connectivity/connectivity';
-import { Geolocation } from '@ionic-native/geolocation'
 
-declare var BMap;
+declare var qq;
 /*
- Generated class for the AMapsProvider provider.
+ Generated class for the QQMapsProvider provider.
 
  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
  for more info on providers and Angular DI.
  */
 @Injectable()
-export class BaiduMapsProvider {
+export class QQMapsProvider {
 
     mapElement: any;
     pleaseConnect: any;
     map: any;
+    geolocation: any;
     mapInitialized: boolean = false;
     mapLoaded: boolean = false;
     mapLoadedObserver: any;
     mapCurrentMarker: any;
-    mapAPIKey: string = "Sa3Mb0eKGnygErQsZtOVSkheRZrqXDT7";
+    mapAPIKey: string = "M6QBZ-NEJW3-OQK32-374UL-V4UEH-BMB5Q";
 
     constructor(public connectivity: ConnectivityProvider,
-                public geoLocation: Geolocation) {
+                public platform:Platform) {
 
-        console.log('Hello AMapsProvider Provider');
+        console.log('Hello QQMapsProvider Provider');
     }
 
     init(mapElement: any, pleaseConnect: any): Promise<any> {
@@ -48,7 +48,7 @@ export class BaiduMapsProvider {
 
                 if(this.connectivity.isOnline()){
 
-                    window['mapInit'] = () => {
+                    window['message'] = () => {
 
                         this.initMap().then(() => {
 
@@ -59,11 +59,18 @@ export class BaiduMapsProvider {
                     };
 
                     let script = document.createElement("script");
-                    script.id = "BaiduMaps";
+                    script.id = "QQMaps";
 
                     if(this.mapAPIKey){
 
-                        script.src = 'https://api.map.baidu.com/api?v=2.0&ak=' + this.mapAPIKey + '&callback=mapInit';
+                        let geolocation = new qq.maps.Geolocation(this.mapAPIKey, "camperMate");
+                        let options = {timeout: 8000};
+                        geolocation.getLocation( (position) => {
+                            console.log( JSON.stringify(position) );
+                        }, () => {
+                            console.log("qq error");
+                        }, options);
+                        //script.src = 'https://3gimg.qq.com/lightmap/components/geolocation/geolocation.min.js';
                     } else {
 
                         //script.src = 'http://maps.google.com/maps/api/js?callback=mapInit';
@@ -93,56 +100,22 @@ export class BaiduMapsProvider {
     initMap(): Promise<any> {
 
         this.mapInitialized = true;
+        let curLocation: any;
 
         return new Promise((resolve) => {
 
-            let options = {
-                enableHighAccuracy: true,
-                timeout: 5000,
-                maximumAge: 0
-            };
-
-            this.geoLocation.getCurrentPosition(options).then((position) => {
-
-                //let latLng = new Point(position.coords.latitude, position.coords.longitude);
-
-                /*let map = this.map = new BMap.Map(this.mapElement, { enableMapClick: true });//创建地图实例
-                map.enableScrollWheelZoom();//启动滚轮放大缩小，默认禁用
-                map.enableContinuousZoom();//连续缩放效果，默认禁用
-                let point = new BMap.Point(116.06827, 22.549284);//position.coords.latitude, position.coords.longitude);
-                map.centerAndZoom(point, 16);*/
-                let point = new BMap.Point(position.coords.longitude, position.coords.latitude);
-                var convertor = new BMap.Convertor();
-                var pointArr = [];
-                pointArr.push(point);
-                convertor.translate(pointArr, 3, 5, (data) => {
-                    if(data.status === 0) {
-                        var marker = new BMap.Marker(data.points[0]);
-                        this.map.addOverlay(marker);
-                        var label = new BMap.Label("My position",{offset:new BMap.Size(20,-10)});
-                        marker.setLabel(label);
-                        this.map.setCenter(data.points[0]);
-                    }
-                });
-                this.map = new BMap.Map(this.mapElement);
-                this.map.centerAndZoom(point,15);
-                resolve(true);
-
-            });
-
         });
-
     }
 
-/*    setCurrentPos(data) {
-        if(data.status === 0) {
-            var marker = new BMap.Marker(data.points[0]);
-            this.map.addOverlay(marker);
-            var label = new BMap.Label("转换后的百度标注（正确）",{offset:new BMap.Size(20,-10)});
-            marker.setLabel(label); //添加百度label
-            this.map.setCenter(data.points[0]);
-        }
-    }*/
+    /*    setCurrentPos(data) {
+     if(data.status === 0) {
+     var marker = new BMap.Marker(data.points[0]);
+     this.map.addOverlay(marker);
+     var label = new BMap.Label("转换后的百度标注（正确）",{offset:new BMap.Size(20,-10)});
+     marker.setLabel(label); //添加百度label
+     this.map.setCenter(data.points[0]);
+     }
+     }*/
 
     disableMap(): void {
 
@@ -209,6 +182,8 @@ export class BaiduMapsProvider {
         this.mapCurrentMarker = marker;
 
     }
+
+
 
 
 

@@ -1,7 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavController, Platform, AlertController } from 'ionic-angular';
 //import { GoogleMapsProvider } from '../../providers/google-maps/google-maps';
-import { BaiduMapsProvider } from '../../providers/google-maps/baidu-maps';
+import { AMapsProvider } from '../../providers/google-maps/amaps';
+//import { QQMapsProvider } from '../../providers/google-maps/qqmaps';
 import { DataProvider } from "../../providers/data/data";
 import { Geolocation } from '@ionic-native/geolocation'
 
@@ -29,7 +30,7 @@ export class LocationPage {
                 public dataService: DataProvider,
                 public alertCtrl: AlertController,
                 public geolocation: Geolocation,
-                public maps: BaiduMapsProvider
+                public maps: AMapsProvider
     ) {
     }
 

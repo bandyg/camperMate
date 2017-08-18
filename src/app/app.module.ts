@@ -11,7 +11,9 @@ import { Dialogs } from '@ionic-native/dialogs';
 import { ConnectivityProvider } from '../providers/connectivity/connectivity';
 import { Geolocation } from '@ionic-native/geolocation'
 import { Network } from '@ionic-native/network';
-import { BaiduMapsProvider } from '../providers/google-maps/baidu-maps'
+import { AMapsProvider } from '../providers/google-maps/amaps'
+import { BackgroundGeolocation } from '@ionic-native/background-geolocation'
+import { HttpModule } from '@angular/http';
 
 @NgModule({
     declarations: [
@@ -19,6 +21,7 @@ import { BaiduMapsProvider } from '../providers/google-maps/baidu-maps'
     ],
     imports: [
         BrowserModule,
+        HttpModule,
         IonicModule.forRoot(MyApp),
         IonicStorageModule.forRoot(
             /*{
@@ -41,7 +44,8 @@ import { BaiduMapsProvider } from '../providers/google-maps/baidu-maps'
         ConnectivityProvider,
         Geolocation,
         Network,
-        BaiduMapsProvider
+        AMapsProvider,
+        BackgroundGeolocation
     ]
 })
 export class AppModule {}
