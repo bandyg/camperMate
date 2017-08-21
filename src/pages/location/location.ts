@@ -4,7 +4,7 @@ import { IonicPage, NavController, Platform, AlertController } from 'ionic-angul
 import { AMapsProvider } from '../../providers/google-maps/amaps';
 //import { QQMapsProvider } from '../../providers/google-maps/qqmaps';
 import { DataProvider } from "../../providers/data/data";
-import { Geolocation } from '@ionic-native/geolocation'
+//import { Geolocation } from '@ionic-native/geolocation'
 
 /**
  * Generated class for the LocationPage page.
@@ -29,7 +29,7 @@ export class LocationPage {
                 public platform: Platform,
                 public dataService: DataProvider,
                 public alertCtrl: AlertController,
-                public geolocation: Geolocation,
+//                public geolocation: Geolocation,
                 public maps: AMapsProvider
     ) {
     }

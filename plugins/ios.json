@@ -37,24 +37,23 @@
         "cordova-plugin-dialogs": {
             "PACKAGE_NAME": "io.ionic.starter"
         },
-        "cordova-plugin-geolocation": {
-            "GEOLOCATION_USAGE_DESCRIPTION": " ",
-            "PACKAGE_NAME": "io.ionic.starter"
-        },
         "cordova-plugin-network-information": {
             "PACKAGE_NAME": "io.ionic.starter"
         },
         "cordova-plugin-crosswalk-webview": {
             "PACKAGE_NAME": "io.ionic.starter"
         },
+        "cordova-plugin-compat": {
+            "PACKAGE_NAME": "io.ionic.starter"
+        },
         "cordova-plugin-mauron85-background-geolocation": {
             "ALWAYS_USAGE_DESCRIPTION": "This app requires background location tracking",
             "PACKAGE_NAME": "io.ionic.starter"
-        }
-    },
-    "dependent_plugins": {
-        "cordova-plugin-compat": {
+        },
+        "cordova-plugin-geolocation": {
+            "GEOLOCATION_USAGE_DESCRIPTION": " ",
             "PACKAGE_NAME": "io.ionic.starter"
         }
-    }
+    },
+    "dependent_plugins": {}
 }

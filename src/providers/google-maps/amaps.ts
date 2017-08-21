@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { ConnectivityProvider } from '../connectivity/connectivity';
-import { Geolocation } from '@ionic-native/geolocation'
+//import { Geolocation } from '@ionic-native/geolocation'
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
 import { Http } from '@angular/http'
 
@@ -27,7 +27,7 @@ export class AMapsProvider {
     mapAPIServKey: string = "249ddb61453532a53f962180f137bd03";
 
     constructor(public connectivity: ConnectivityProvider,
-                public geoLocation: Geolocation,
+                //public geoLocation: Geolocation,
                 private backgroundGeolocation: BackgroundGeolocation,
                 public platform:Platform,
                 public http: Http) {
@@ -48,9 +48,9 @@ export class AMapsProvider {
 
         return new Promise((resolve) => {
 
-            if(typeof google == "undefined" || typeof google.maps == "undefined"){
+            if(typeof AMap == "undefined" || typeof AMap.Map == "undefined"){
 
-                console.log("Baidu maps JavaScript needs to be loaded.");
+                console.log("AMap maps JavaScript needs to be loaded.");
                 this.disableMap();
 
                 if(this.connectivity.isOnline()){
@@ -73,7 +73,7 @@ export class AMapsProvider {
                         script.src = 'http://webapi.amap.com/maps?v=1.3&key=' + this.mapAPIKey + '&callback=mapInit';
                     } else {
 
-                        //script.src = 'http://maps.google.com/maps/api/js?callback=mapInit';
+                        console.log("load AMap script failed! Need the API key.");
                     }
 
                     document.body.appendChild(script);
@@ -104,51 +104,10 @@ export class AMapsProvider {
 
         return new Promise((resolve) => {
 
-            const config: BackgroundGeolocationConfig = {
-                desiredAccuracy: 100,
-                stationaryRadius: 10,
-                distanceFilter: 10,
-                debug: true, //  enable this hear sounds for background-geolocation life-cycle.
-                //stopOnTerminate: false, // enable this to clear background location settings when the app terminates
-                interval: 5000
-            };
-
-            // BackgroundGeolocation is highly configurable. See platform specific configuration options
-
-            this.backgroundGeolocation.configure(config)
-                .subscribe((location: BackgroundGeolocationResponse) => {
-
-                    console.log(location);
-                    this.getGps2AMapPos( location.longitude, location.latitude ).subscribe( val => {
-                        console.log( val._body );
-                        let resp = JSON.parse(val._body);
-                        if( resp.status == "1" ) {
-
-                            let posArray = resp.locations.split(",");
-                            let positions = new AMap.LngLat( posArray[0], posArray[1] );
-                            this.map.setZoomAndCenter(16, positions );
-                            var marker = new AMap.Marker({
-                                map: this.map,
-                                position: positions
-                            });
-                            console.log("setCenter");
-                        }
-
-                    });
-                    // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
-                    // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
-                    // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
-                    //this.backgroundGeolocation.finish(); // FOR IOS ONLY
-
-
-                });
-
-            // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
-            this.backgroundGeolocation.start();
 
             // If you wish to turn OFF background-tracking, call the #stop method.
             // backgroundGeolocation.stop();
-
+            /*
             let options = {
                 enableHighAccuracy: true,
                 timeout: 0,
@@ -157,7 +116,7 @@ export class AMapsProvider {
 
             this.geoLocation.getCurrentPosition(options).then((position) => {
 
-                console.log( {lat: position.coords.latitude, lng:position.coords.longitude} );
+                console.log( "geoLocation" + {lat: position.coords.latitude, lng:position.coords.longitude} );
                 this.map.setZoomAndCenter(16, [position.coords.longitude, position.coords.latitude]);
                 var marker = new AMap.Marker({
                     map: this.map,
@@ -184,17 +143,18 @@ export class AMapsProvider {
                  this.map.setCenter(curPos);
                  resolve(true);
 
-                 });*/
+                 });
 
-            });
+            });*/
 
-            this.map = new AMap.Map(this.mapElement, {resizeEnable: true, zoom:11});
+            this.map = new AMap.Map(this.mapElement, {resizeEnable: true, zoom:12});
             this.map.plugin('AMap.Geolocation', () => {
                 this.geolocation = new AMap.Geolocation({
                     enableHighAccuracy: true,//是否使用高精度定位，默认:true
                     timeout: 10000,          //超过10秒后停止定位，默认：无穷大
                     buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
                     showCircle: false,
+                    showMarker: false,
                     buttonPosition:'RB',
                     noIpLocate: 0,
                     GeoLocationFirst: true,
@@ -213,8 +173,9 @@ export class AMapsProvider {
                 });
 
                 AMap.event.addListener(this.geolocation, 'complete', () => {
-                    this.map.setZoom(16);
+                    this.map.setZoom(14);
                     console.log("complete");
+                    this.getLastPostion();
                 });//返回定位信息
 
                 AMap.event.addListener(this.geolocation, 'error', (error) => {
@@ -227,6 +188,56 @@ export class AMapsProvider {
                 });      //返回定位出错信息
 
             });
+
+
+            // BackgroundGeolocation is highly configurable. See platform specific configuration options
+            if( this.platform.is('cordova') ) {
+
+                const config: BackgroundGeolocationConfig = {
+                    desiredAccuracy: 10,
+                    stationaryRadius: 5,
+                    distanceFilter: 5,
+                    debug: true, //  enable this hear sounds for background-geolocation life-cycle.
+                    stopOnTerminate: false, // enable this to clear background location settings when the app terminates
+                    startForeground:true,
+                    interval: 10,
+                    fastestInterval: 5,
+                    activitiesInterval: 10
+                };
+
+                this.backgroundGeolocation.configure(config)
+                    .subscribe((location: BackgroundGeolocationResponse) => {
+
+                        console.log(location);
+                        this.getGps2AMapPos( location.longitude, location.latitude ).subscribe( val => {
+                            console.log( val._body );
+                            let resp = JSON.parse(val._body);
+                            if( resp.status == "1" ) {
+
+                                let posArray = resp.locations.split(",");
+                                let positions = new AMap.LngLat( posArray[0], posArray[1] );
+                                this.map.setZoomAndCenter(15, positions );
+                                var marker = new AMap.Marker({
+                                    map: this.map,
+                                    position: positions
+                                });
+                                console.log("setCenter");
+                            }
+
+                        });
+                        // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
+                        // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
+                        // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
+                        //this.backgroundGeolocation.finish(); // FOR IOS ONLY
+
+
+                    });
+
+                // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
+                this.backgroundGeolocation.start();
+            }
+
+
         });
     }
 
@@ -308,6 +319,8 @@ export class AMapsProvider {
 
 
     public getGps2AMapPos(longtitude:number, latitude:number): any {
+
+        console.log( "step into getGps2AMapPos" );
         let url = 'http://restapi.amap.com/v3/assistant/coordinate/convert?key=' + this.mapAPIServKey+
             '&locations=' + longtitude +','+ latitude + '&coordsys=gps';
         return this.http.get(url);
@@ -323,7 +336,77 @@ export class AMapsProvider {
         this.backgroundGeolocation.stop();
     }
 
+    public initBackgroundLocating() {
 
+        if( this.platform.is('cordova') ) {
+
+            const config: BackgroundGeolocationConfig = {
+                desiredAccuracy: 100,
+                stationaryRadius: 10,
+                distanceFilter: 10,
+                debug: true, //  enable this hear sounds for background-geolocation life-cycle.
+                //stopOnTerminate: false, // enable this to clear background location settings when the app terminates
+                interval: 1000
+            };
+
+            this.backgroundGeolocation.configure(config)
+                .subscribe((location: BackgroundGeolocationResponse) => {
+
+                    console.log(location);
+                    this.getGps2AMapPos( location.longitude, location.latitude ).subscribe( val => {
+                        console.log( val._body );
+                        let resp = JSON.parse(val._body);
+                        if( resp.status == "1" ) {
+
+                            let posArray = resp.locations.split(",");
+                            let positions = new AMap.LngLat( posArray[0], posArray[1] );
+                            this.map.setZoomAndCenter(16, positions );
+                            var marker = new AMap.Marker({
+                                map: this.map,
+                                position: positions
+                            });
+                            console.log("setCenter");
+                        }
+
+                    });
+                    // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
+                    // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
+                    // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
+                    //this.backgroundGeolocation.finish(); // FOR IOS ONLY
+
+
+                });
+
+            // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
+            this.backgroundGeolocation.start();
+        }
+
+    }
+
+    public getLastPostion() {
+
+        this.backgroundGeolocation.getLocations().then( (locations) => {
+
+            console.log(locations);
+            let location = locations.pop();
+            this.getGps2AMapPos( location.longitude, location.latitude ).subscribe( val => {
+                console.log( val._body );
+                let resp = JSON.parse(val._body);
+                if( resp.status == "1" ) {
+
+                    let posArray = resp.locations.split(",");
+                    let positions = new AMap.LngLat( posArray[0], posArray[1] );
+                    this.map.setZoomAndCenter(15, positions );
+                    var marker = new AMap.Marker({
+                        map: this.map,
+                        position: positions
+                    });
+                    console.log("setCenter");
+                }
+
+            });
+        }, ()=>{});
+    }
 
 
 }

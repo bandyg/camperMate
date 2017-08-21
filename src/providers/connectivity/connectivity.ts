@@ -43,7 +43,7 @@ export class ConnectivityProvider {
     }
 
     watchOnline(): any {
-        console.log("watch online:"+JSON.stringify(this.network));
+        //console.log("watch online:"+JSON.stringify(this.network));
         return this.network.onConnect();
     }
 
