@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { ConnectivityProvider } from '../connectivity/connectivity';
-//import { Geolocation } from '@ionic-native/geolocation'
+import { Geolocation } from '@ionic-native/geolocation'
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
 import { Http } from '@angular/http'
-
+//Ben TODO: get familar with the amap functionality
 declare var AMap;
 /*
  Generated class for the AMapsProvider provider.
@@ -23,8 +23,10 @@ export class AMapsProvider {
     mapLoaded: boolean = false;
     mapLoadedObserver: any;
     mapCurrentMarker: any;
-    mapAPIKey: string = "8c8430330bcd1554c2d7603514d1edcb";
-    mapAPIServKey: string = "249ddb61453532a53f962180f137bd03";
+    mapAPIKey: string = "835c2dddfc5ed67274f2eb60a07caa8b";
+    mapAPIServKey: string = "0d8ecf83021c5cc3be34752cd34cf06f";
+    zoomLevel = 14;
+    cityZoomLevel = 12;
 
     constructor(public connectivity: ConnectivityProvider,
                 //public geoLocation: Geolocation,
@@ -40,11 +42,11 @@ export class AMapsProvider {
         this.mapElement = mapElement;
         this.pleaseConnect = pleaseConnect;
 
-        return this.loadBaiduMap();
+        return this.loadAMap();
 
     }
 
-    loadBaiduMap(): Promise<any> {
+    loadAMap(): Promise<any> {
 
         return new Promise((resolve) => {
 
@@ -60,6 +62,7 @@ export class AMapsProvider {
                         this.initMap().then(() => {
 
                             resolve(true);
+                            this.mapLoaded = true;
                         });
 
                         this.enableMap();
@@ -100,98 +103,19 @@ export class AMapsProvider {
     initMap(): Promise<any> {
 
         this.mapInitialized = true;
-        let curLocation: any;
+        //let curLocation: any;
 
         return new Promise((resolve) => {
 
-
             // If you wish to turn OFF background-tracking, call the #stop method.
             // backgroundGeolocation.stop();
-            /*
-            let options = {
-                enableHighAccuracy: true,
-                timeout: 0,
-                maximumAge: Infinity,
-            };
 
-            this.geoLocation.getCurrentPosition(options).then((position) => {
+            this.createMap();
 
-                console.log( "geoLocation" + {lat: position.coords.latitude, lng:position.coords.longitude} );
-                this.map.setZoomAndCenter(16, [position.coords.longitude, position.coords.latitude]);
-                var marker = new AMap.Marker({
-                    map: this.map,
-                    position: [position.coords.longitude, position.coords.latitude]
-                });
-                //let latLng = new Point(position.coords.latitude, position.coords.longitude);
-
-                /*let map = this.map = new BMap.Map(this.mapElement, { enableMapClick: true });//创建地图实例
-                 map.enableScrollWheelZoom();//启动滚轮放大缩小，默认禁用
-                 map.enableContinuousZoom();//连续缩放效果，默认禁用
-                 let point = new BMap.Point(116.06827, 22.549284);//position.coords.latitude, position.coords.longitude);
-                 map.centerAndZoom(point, 16);
-
-                 let pos = AMap.LngLat(position.coords.longitude, position.coords.latitude);
-                 this.map = new AMap.Map(this.mapElement, {
-                 resizeEnable: true,
-                 zoom: 13,
-                 center: pos
-                 });
-
-                 this.map = new AMap.Map(this.mapElement);
-                 let curPos = AMap.LngLat(position.coords.longitude, position.coords.latitude);
-                 this.map.setZoom(10);
-                 this.map.setCenter(curPos);
-                 resolve(true);
-
-                 });
-
-            });*/
-
-            this.map = new AMap.Map(this.mapElement, {resizeEnable: true, zoom:12});
-            this.map.plugin('AMap.Geolocation', () => {
-                this.geolocation = new AMap.Geolocation({
-                    enableHighAccuracy: true,//是否使用高精度定位，默认:true
-                    timeout: 10000,          //超过10秒后停止定位，默认：无穷大
-                    buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-                    showCircle: false,
-                    showMarker: false,
-                    buttonPosition:'RB',
-                    noIpLocate: 0,
-                    GeoLocationFirst: true,
-                    panToLocation: true,
-                    useNative: true
-                });
-                //this.map.
-                this.map.addControl(this.geolocation);
-                this.geolocation.getCurrentPosition( (status, result) => {
-
-                    console.log( "position"+result.position);
-                    console.log( "accuracy"+result.accuracy);
-                    console.log( "location_type"+result.location_type);
-                    console.log( "isConverted"+result.isConverted);
-                    console.log( "formattedAddress"+result.formattedAddress);
-                });
-
-                AMap.event.addListener(this.geolocation, 'complete', () => {
-                    this.map.setZoom(14);
-                    console.log("complete");
-                    this.getLastPostion();
-                });//返回定位信息
-
-                AMap.event.addListener(this.geolocation, 'error', (error) => {
-
-                    console.log(error.info);
-                    console.log(error.message);
-                    console.log( curLocation.longitude );
-                    console.log( curLocation.latitude );
-                    //this.map.setZoomAndCenter(16, [curLocation.longitude, curLocation.latitude]);
-                });      //返回定位出错信息
-
-            });
-
+            this.initLocation();
 
             // BackgroundGeolocation is highly configurable. See platform specific configuration options
-            if( this.platform.is('cordova') ) {
+            /*if( this.platform.is('cordova') ) {
 
                 const config: BackgroundGeolocationConfig = {
                     desiredAccuracy: 10,
@@ -235,8 +159,8 @@ export class AMapsProvider {
 
                 // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
                 this.backgroundGeolocation.start();
-            }
-
+            }*/
+            this.initBackgroundLocating();
 
         });
     }
@@ -274,7 +198,7 @@ export class AMapsProvider {
             setTimeout(() => {
 
                 if(typeof google == "undefined" || typeof google.maps == "undefined"){
-                    this.loadBaiduMap();
+                    this.loadAMap();
                 }
                 else {
                     if(!this.mapInitialized){
@@ -298,15 +222,18 @@ export class AMapsProvider {
 
     }
 
-    changeMarker(lat: number, lng: number): void {
+    changeMarker(lng: number, lat: number): void {
 
+        let lngLat = new AMap.LngLat(lng, lat);
 
-        let latLng = new google.maps.LatLng(lat, lng);
+        this.map.setZoomAndCenter(this.zoomLevel, lngLat);
 
-        let marker = new google.maps.Marker({
+        var marker = new AMap.Marker({
             map: this.map,
-            animation: google.maps.Animation.DROP,
-            position: latLng
+            position: lngLat,
+            draggable: true,
+            raiseOnDrag: true,
+            animation: "AMAP_ANIMATION_DROP"
         });
 
         if(this.mapCurrentMarker){
@@ -341,12 +268,15 @@ export class AMapsProvider {
         if( this.platform.is('cordova') ) {
 
             const config: BackgroundGeolocationConfig = {
-                desiredAccuracy: 100,
-                stationaryRadius: 10,
-                distanceFilter: 10,
+                desiredAccuracy: 10,
+                stationaryRadius: 5,
+                distanceFilter: 5,
                 debug: true, //  enable this hear sounds for background-geolocation life-cycle.
-                //stopOnTerminate: false, // enable this to clear background location settings when the app terminates
-                interval: 1000
+                stopOnTerminate: false, // enable this to clear background location settings when the app terminates
+                startForeground:true,
+                interval: 10,
+                fastestInterval: 5,
+                activitiesInterval: 10
             };
 
             this.backgroundGeolocation.configure(config)
@@ -359,12 +289,13 @@ export class AMapsProvider {
                         if( resp.status == "1" ) {
 
                             let posArray = resp.locations.split(",");
-                            let positions = new AMap.LngLat( posArray[0], posArray[1] );
-                            this.map.setZoomAndCenter(16, positions );
+                            this.changeMarker(posArray[0], posArray[1]);
+                            /*let positions = new AMap.LngLat( posArray[0], posArray[1] );
+                            this.map.setZoomAndCenter(this.zoomLevel, positions );
                             var marker = new AMap.Marker({
                                 map: this.map,
                                 position: positions
-                            });
+                            });*/
                             console.log("setCenter");
                         }
 
@@ -406,6 +337,72 @@ export class AMapsProvider {
 
             });
         }, ()=>{});
+    }
+
+    createMap() {
+
+        this.map = new AMap.Map(this.mapElement,
+            {
+                //mapStyle: 'amap://styles/fresh',
+                resizeEnable: true,
+                zoom: this.zoomLevel,
+                showIndoorMap: true,
+                showBuildingBlock: true
+            });
+    }
+
+    initLocation() {
+
+        this.map.plugin('AMap.Geolocation', () => {
+            this.geolocation = new AMap.Geolocation({
+                enableHighAccuracy: true,//是否使用高精度定位，默认:true
+                timeout: 10000,          //超过10秒后停止定位，默认：无穷大
+                buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                showCircle: false,
+                showMarker: false,
+                buttonPosition:'RB',
+                noIpLocate: 0,
+                GeoLocationFirst: true,
+                panToLocation: true,
+                useNative: true
+            });
+            //this.map.
+            this.map.addControl(this.geolocation);
+
+            this.geolocation.getCurrentPosition( (status, result) => {
+
+                console.log( "position"+result.position);
+                console.log( "accuracy"+result.accuracy);
+                console.log( "location_type"+result.location_type);
+                console.log( "isConverted"+result.isConverted);
+                console.log( "formattedAddress"+result.formattedAddress);
+                console.log( "status:" + status );
+
+            });
+
+            AMap.event.addListener(this.geolocation, 'complete', () => {
+                this.map.setZoom(this.zoomLevel);
+                console.log("geolocation complete");
+                //this.getLastPostion();
+            });//返回定位信息
+
+            AMap.event.addListener(this.geolocation, 'error', (error) => {
+
+                console.log(error.info);
+                console.log(error.message);
+                this.geolocation.getCityInfo( (status, reslut) => {
+
+                    console.log("getCityInfo" + status);
+                    console.log("getCityInfo" + JSON.stringify(reslut.center));
+                    let positions = new AMap.LngLat( reslut.center[0], reslut.center[1] );
+                    this.map.setZoomAndCenter(this.cityZoomLevel, positions );
+                });
+                //console.log( curLocation.longitude );
+                //console.log( curLocation.latitude );
+                //this.map.setZoomAndCenter(16, [curLocation.longitude, curLocation.latitude]);
+            });      //返回定位出错信息
+
+        });
     }
 
 

@@ -6,10 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
-    <meta http-equiv="content-security-policy" content="font-src 'self' data:;
-        img-src * data:; default-src gap://ready file://* *; script-src 'self'
-        'unsafe-inline' 'unsafe-eval' blob: *; object-src 'self';style-src 'self' 'unsafe-inline' *;
-        child-src blob: https://webapi.amap.com;" >
+    <!--meta http-equiv="content-security-policy" content="font-src 'self' data:;
+        img-src * data:; default-src gap://* file://* * ; script-src 'self'
+        'unsafe-inline' 'unsafe-eval' blob: *; object-src 'self' *;style-src 'self' 'unsafe-inline' *;
+        child-src blob: https://webapi.amap.com *;" -->
+    <meta http-equiv="content-security-policy" content="font-src 'self' data:;      img-src * data:; default-src gap://ready file://* http://10.0.2.2 webapi.amap.com restapi.amap.com vdata.amap.com blob: *; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob: *; style-src 'self' 'unsafe-inline' *; " >
+    <!--try to compile-->
+    <!--try again-->
 
     <link rel="icon" type="image/x-icon" href="assets/icon/favicon.ico">
     <link rel="manifest" href="manifest.json">
