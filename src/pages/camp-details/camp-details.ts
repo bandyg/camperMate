@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { DataProvider } from '../../providers/data/data'
+import { DataProvider } from '../../providers/data/data';
 
 /**
  * Generated class for the CampDetailsPage page.
@@ -24,7 +24,7 @@ export class CampDetailsPage {
     ) {
 
         this.campDetailsForm = formBuilder.group({
-            getAccessCode: ['12345'],
+            getAccessCode: [''],
             ammenitiesCode: [''],
             wifiPassword: [''],
             phoneNumber: [''],
@@ -35,12 +35,35 @@ export class CampDetailsPage {
     }
 
     ionViewDidLoad() {
-        console.log('ionViewDidLoad CampDetailsPage');
+
+        let savedDetails: any = false;
+
+        this.data.getCampDetails().then( (details) => {
+
+            if( details && typeof(details) != 'undefined' ) {
+
+                savedDetails = JSON.parse(details);
+            }
+
+            let formControls: any = this.campDetailsForm.controls;
+
+            if(savedDetails) {
+
+                formControls.getAccessCode.setValue(savedDetails.getAccessCode);
+                formControls.ammenitiesCode.setValue(savedDetails.ammenitiesCode);
+                formControls.wifiPassword.setValue(savedDetails.wifiPassword);
+                formControls.phoneNumber.setValue(savedDetails.phoneNumber);
+                formControls.departureDate.setValue(savedDetails.departureDate);
+                formControls.notes.setValue(savedDetails.notes);
+            }
+
+        } );
     }
 
     saveForm() {
 
-        let data = this.campDetailsForm.value;
+        let newData = this.campDetailsForm.value;
+        this.data.setCampDetails(newData);
     }
 
 }

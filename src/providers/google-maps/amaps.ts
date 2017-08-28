@@ -5,6 +5,7 @@ import { Geolocation } from '@ionic-native/geolocation'
 import { BackgroundGeolocation, BackgroundGeolocationConfig, BackgroundGeolocationResponse } from '@ionic-native/background-geolocation';
 import { Http } from '@angular/http'
 //Ben TODO: get familar with the amap functionality
+//Ben TODO: refactor this provider than go on tutorial
 declare var AMap;
 /*
  Generated class for the AMapsProvider provider.
@@ -165,15 +166,6 @@ export class AMapsProvider {
         });
     }
 
-    /*    setCurrentPos(data) {
-     if(data.status === 0) {
-     var marker = new BMap.Marker(data.points[0]);
-     this.map.addOverlay(marker);
-     var label = new BMap.Label("转换后的百度标注（正确）",{offset:new BMap.Size(20,-10)});
-     marker.setLabel(label); //添加百度label
-     this.map.setCenter(data.points[0]);
-     }
-     }*/
 
     disableMap(): void {
 
@@ -272,7 +264,7 @@ export class AMapsProvider {
                 stationaryRadius: 5,
                 distanceFilter: 5,
                 debug: true, //  enable this hear sounds for background-geolocation life-cycle.
-                stopOnTerminate: false, // enable this to clear background location settings when the app terminates
+//                stopOnTerminate: false, // enable this to clear background location settings when the app terminates
                 startForeground:true,
                 interval: 10,
                 fastestInterval: 5,
@@ -297,14 +289,17 @@ export class AMapsProvider {
                                 position: positions
                             });*/
                             console.log("setCenter");
+                            this.backgroundGeolocation.stop(); // stop gps tracking after get position success.
                         }
 
                     });
                     // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
                     // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
                     // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
-                    //this.backgroundGeolocation.finish(); // FOR IOS ONLY
+                    if( this.platform.is('ios') ) {
 
+                        this.backgroundGeolocation.finish(); // FOR IOS ONLY
+                    }
 
                 });
 
@@ -383,7 +378,7 @@ export class AMapsProvider {
             AMap.event.addListener(this.geolocation, 'complete', () => {
                 this.map.setZoom(this.zoomLevel);
                 console.log("geolocation complete");
-                //this.getLastPostion();
+
             });//返回定位信息
 
             AMap.event.addListener(this.geolocation, 'error', (error) => {
@@ -397,9 +392,7 @@ export class AMapsProvider {
                     let positions = new AMap.LngLat( reslut.center[0], reslut.center[1] );
                     this.map.setZoomAndCenter(this.cityZoomLevel, positions );
                 });
-                //console.log( curLocation.longitude );
-                //console.log( curLocation.latitude );
-                //this.map.setZoomAndCenter(16, [curLocation.longitude, curLocation.latitude]);
+
             });      //返回定位出错信息
 
         });

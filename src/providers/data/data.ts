@@ -27,38 +27,39 @@ export class DataProvider {
         this.storage.set( 'IntroFlag', flag );
     }
 
-    getData( ): Promise<any> {
-
-        return this.storage.get('checklists');
-    }
-
-    save( data: ChecklistModel[] ): void {
-
-        let saveData = [];
-
-        data.forEach( checklist => {
-
-            saveData.push(
-                {
-                    title: checklist.title,
-                    dateTime: checklist.dateTime,
-                    progress: checklist.progress,
-                    items: checklist.items,
-                }
-            );
-        });
-
-        let newData = JSON.stringify( saveData );
-        console.log(newData);
-        this.storage.set( 'checklists', newData );
-    }
-
     setSampleData(): void {
 
-        this.storage.set( 'checklists', '[{"title":"Sample","dateTime":1498634658451,"progress":"1/3","items":[{"title":"task1","checked":true,"note":"note1"},{"title":"task2","checked":false,"note":"note2"},{"title":"task3","checked":false,"note":"note3"}]}]' );
+
     }
 
     getLocation(): Promise<any> {
         return this.storage.get('location');
     }
+
+    getCampDetails(): Promise<any> {
+        return this.storage.get('campdetails');
+    }
+
+    getMyDetails(): Promise<any> {
+        return this.storage.get('mydetails');
+    }
+
+    setLocation(object: Object) {
+
+        let data = JSON.stringify(object);
+        this.storage.set('location', data);
+    }
+
+    setCampDetails(object: Object) {
+
+        let data = JSON.stringify(object);
+        this.storage.set('campdetails', data);
+    }
+
+    setMyDetails(object: Object) {
+
+        let data = JSON.stringify(object);
+        this.storage.set('mydetails', data);
+    }
+
 }
