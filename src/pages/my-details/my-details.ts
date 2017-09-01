@@ -24,10 +24,10 @@ export class MyDetailsPage {
                 public data: DataProvider
     ) {
         this.myDetailsForm = formBuilder.group({
-            carRegitration: [''],
+            carRegitration: ['', Validators.pattern('([A-Z]{1})([0-9A-Z]{1,6})')],//Validators.pattern('[^a-z \-\+\.]\ *([0-9])*[0-9]')
             trailerRegistration: [''],
             trailerDimension: [''],
-            phoneNumber: [''],
+            phoneNumber: ['', Validators.pattern('^\\s*(?:\\+?(\\d{1,3}))?([-. (]*(\\d{3})[-. )]*)?((\\d{3})[-. ]*(\\d{2,4})(?:[-.x ]*(\\d+))?)\\s*$')],
             notes: ['']
         });
     }
@@ -60,8 +60,11 @@ export class MyDetailsPage {
 
     saveForm() {
 
-        let newData = this.myDetailsForm.value;
-        this.data.setMyDetails(newData);
+        if (this.myDetailsForm.valid) {
+
+            let newData = this.myDetailsForm.value;
+            this.data.setMyDetails(newData);
+        }
     }
 
 }

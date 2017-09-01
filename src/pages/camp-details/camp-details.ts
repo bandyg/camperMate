@@ -27,7 +27,7 @@ export class CampDetailsPage {
             getAccessCode: [''],
             ammenitiesCode: [''],
             wifiPassword: [''],
-            phoneNumber: [''],
+            phoneNumber: ['', Validators.pattern('^\\s*(?:\\+?(\\d{1,3}))?([-. (]*(\\d{3})[-. )]*)?((\\d{3})[-. ]*(\\d{2,4})(?:[-.x ]*(\\d+))?)\\s*$')],
             departureDate: [''],
             notes: ['']
         });
@@ -62,8 +62,12 @@ export class CampDetailsPage {
 
     saveForm() {
 
-        let newData = this.campDetailsForm.value;
-        this.data.setCampDetails(newData);
+        if (this.campDetailsForm.valid) {
+
+            let newData = this.campDetailsForm.value;
+            this.data.setCampDetails(newData);
+        }
+
     }
 
 }

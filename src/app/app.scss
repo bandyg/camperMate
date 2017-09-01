@@ -14,18 +14,32 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
-ion-content {
-  background-color: #32db64 !important;
+ion-title img {
+  max-height: 39px;
+  margin-top: 6px;
 }
 
-ion-title img {
-  max-height: 35px;
+ion-input, ion-textarea, ion-datetime {
+  background-color: #F3F3F3;
+  //border: 1px solid #cecece;
+  padding-left: 10px;
+}
+
+ion-textarea {
+  height: 200px;
+}
+
+textarea {
+  height: 180px;
 }
 
 button {
   border: none !important;
 }
 
-.scroll-content {
-  background-color: lightgreen;
+ion-item:not(.input-has-focus) ion-input.ng-invalid {
+  background-color: rgba(245, 61, 61, 0.21);
 }
+//.list-md .item-input:last-child {
+//  border-bottom: 0px solid #dedede;
+//}

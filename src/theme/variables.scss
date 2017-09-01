@@ -54,7 +54,11 @@ $checkbox-md-icon-background-color-off: #fff;
 $checkbox-md-icon-border-color-off: #cecece;
 $checkbox-md-icon-border-color-on: #32db64;
 
-
+$text-input-md-show-focus-highlight: false;
+.list-md .item-input:last-child {
+  border-bottom: 0px solid #dedede !important;
+}
+//$text-input-md-highlight-color: "transparent" ;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
